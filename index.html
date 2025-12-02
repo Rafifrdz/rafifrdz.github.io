@@ -1,55 +1,410 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portofolio Profesional</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#6366f1', // Indigo 500
-              secondary: '#a855f7', // Purple 500
-              dark: '#0f172a', // Slate 900
-            },
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kreatif.ID - Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#ec4899',
+            dark: '#0f172a',
           }
         }
       }
-    </script>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-      
-      html {
-        scroll-behavior: smooth;
-      }
-      
-      .hide-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .hide-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+    }
+  </script>
+  <style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
-  <body class="bg-dark text-slate-200 font-sans antialiased">
-    <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+<body class="bg-slate-950 text-white">
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { Menu, X, Aperture, Camera, ArrowRight, CheckCircle, ExternalLink, ZoomIn, HardDrive, Smartphone, Download, Share2, Instagram, Twitter, Mail, Linkedin } = lucide;
+
+    // Navbar Component
+    const Navbar = () => {
+      const [isOpen, setIsOpen] = useState(false);
+      const [scrolled, setScrolled] = useState(false);
+
+      const navItems = [
+        { label: 'Beranda', href: '#home' },
+        { label: 'Galeri', href: '#gallery' },
+        { label: 'Akses Drive', href: '#drive' },
+        { label: 'Kontak', href: '#contact' },
+      ];
+
+      useEffect(() => {
+        const handleScroll = () => {
+          setScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      return (
+        <nav 
+          className={`fixed w-full z-50 transition-all duration-300 ${
+            scrolled ? 'bg-slate-950/90 backdrop-blur-md shadow-lg py-4' : 'bg-transparent py-6'
+          }`}
+        >
+          <div className="container mx-auto px-6 flex justify-between items-center">
+            <div className="flex items-center gap-2 font-bold text-2xl text-white tracking-tighter">
+              <Aperture className="text-primary w-8 h-8" />
+              <span>KREATIF<span className="text-primary">.ID</span></span>
+            </div>
+
+            <div className="hidden md:flex gap-8">
+              {navItems.map((item) => (
+                <a 
+                  key={item.label} 
+                  href={item.href}
+                  className="text-slate-300 hover:text-white hover:text-primary transition-colors text-sm font-medium uppercase tracking-wide"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+
+            <button 
+              className="md:hidden text-white"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X /> : <Menu />}
+            </button>
+          </div>
+
+          {isOpen && (
+            <div className="md:hidden absolute top-full left-0 w-full bg-slate-900 border-t border-slate-800 shadow-xl">
+              <div className="flex flex-col p-6 gap-4">
+                {navItems.map((item) => (
+                  <a 
+                    key={item.label} 
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="text-slate-300 hover:text-primary text-lg font-medium"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </nav>
+      );
+    };
+
+    // Hero Component
+    const Hero = () => {
+      const profileImage = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80";
+
+      return (
+        <section id="home" className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden">
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-b from-slate-800/20 to-transparent -skew-x-12 translate-x-20 -z-10 hidden lg:block"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] -z-10"></div>
+
+          <div className="container mx-auto px-6 z-10">
+            <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
+              
+              <div className="flex-1 text-center lg:text-left space-y-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/80 border border-slate-700 text-slate-300 backdrop-blur-sm mx-auto lg:mx-0">
+                  <Camera className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-semibold tracking-wider uppercase">Professional Photographer</span>
+                </div>
+
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
+                  Menangkap Momen,<br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+                    Menciptakan Abadi.
+                  </span>
+                </h1>
+                
+                <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                  Hai, saya Rizky. Saya membantu brand dan individu menceritakan kisah terbaik mereka melalui visual yang estetik, tajam, dan penuh makna.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+                  <a 
+                    href="#gallery"
+                    className="group px-8 py-4 bg-primary text-white font-bold rounded-full hover:bg-primary/90 transition-all flex items-center gap-2 shadow-lg shadow-primary/25"
+                  >
+                    Lihat Karya
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                  <a 
+                    href="#contact"
+                    className="px-8 py-4 bg-slate-800 text-white font-semibold rounded-full hover:bg-slate-700 border border-slate-700 transition-all"
+                  >
+                    Hubungi Saya
+                  </a>
+                </div>
+                
+                <div className="pt-4 flex items-center justify-center lg:justify-start gap-6 text-sm text-slate-400 font-medium">
+                    <div className="flex items-center gap-2">
+                        <CheckCircle size={16} className="text-green-500" />
+                        <span>50+ Proyek Selesai</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <CheckCircle size={16} className="text-green-500" />
+                        <span>5 Tahun Pengalaman</span>
+                    </div>
+                </div>
+              </div>
+
+              <div className="flex-1 flex justify-center lg:justify-end relative">
+                <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-[450px] lg:h-[550px] rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 group">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-40 z-10"></div>
+                  <img 
+                    src={profileImage} 
+                    alt="Profile" 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  
+                  <div className="absolute inset-0 border-2 border-white/10 rounded-2xl z-20 pointer-events-none"></div>
+                </div>
+
+                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-secondary rounded-full blur-2xl opacity-40 -z-10"></div>
+                <div className="absolute -top-6 -left-6 w-32 h-32 bg-primary rounded-full blur-2xl opacity-40 -z-10"></div>
+                
+                <div className="absolute -right-4 top-10 bg-slate-950/80 backdrop-blur-md p-3 rounded-lg border border-slate-700 shadow-xl hidden md:block animate-bounce duration-[3000ms]">
+                    <span className="text-2xl">📸</span>
+                </div>
+                 <div className="absolute -left-4 bottom-20 bg-slate-950/80 backdrop-blur-md p-3 rounded-lg border border-slate-700 shadow-xl hidden md:block animate-bounce duration-[4000ms]">
+                    <span className="text-2xl">🎨</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // Gallery Component
+    const Gallery = () => {
+      const [activeFilter, setActiveFilter] = useState('All');
+      
+      const projects = [
+        { id: 1, title: 'Urban Explore', category: 'Photography', imageUrl: 'https://picsum.photos/800/1200?random=1', description: 'Eksplorasi kota Jakarta' },
+        { id: 2, title: 'Neon Nights', category: 'Creative', imageUrl: 'https://picsum.photos/800/600?random=2', description: 'Seni cahaya malam' },
+        { id: 3, title: 'Minimalist', category: 'Product', imageUrl: 'https://picsum.photos/800/800?random=3', description: 'Kampanye produk minimalis' },
+        { id: 4, title: 'Nature Call', category: 'Landscape', imageUrl: 'https://picsum.photos/800/1000?random=4', description: 'Keindahan alam Indonesia' },
+        { id: 5, title: 'Portrait Mode', category: 'Portrait', imageUrl: 'https://picsum.photos/800/900?random=5', description: 'Sesi foto personal' },
+        { id: 6, title: 'Abstract Flow', category: 'Art', imageUrl: 'https://picsum.photos/800/700?random=6', description: 'Eksperimen bentuk dan warna' },
+      ];
+
+      const filters = ['All', 'Photography', 'Product', 'Portrait', 'Art'];
+
+      const filteredProjects = activeFilter === 'All' 
+        ? projects 
+        : projects.filter(p => p.category === activeFilter || p.category === 'Creative' || p.category === 'Landscape');
+
+      return (
+        <section id="gallery" className="py-24 bg-slate-900/50">
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Galeri Terpilih</h2>
+                <p className="text-slate-400 max-w-lg">
+                  Kumpulan karya terbaik yang telah saya kerjakan untuk berbagai klien dan proyek pribadi.
+                </p>
+              </div>
+              
+              <div className="flex gap-2 mt-6 md:mt-0 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                      activeFilter === filter 
+                        ? 'bg-primary border-primary text-white' 
+                        : 'bg-transparent border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProjects.map((project) => (
+                <div key={project.id} className="group relative overflow-hidden rounded-2xl cursor-pointer">
+                  <div className="aspect-w-3 aspect-h-4 w-full h-full min-h-[300px] bg-slate-800">
+                     <img 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <span className="text-primary text-xs font-bold uppercase tracking-wider mb-2">{project.category}</span>
+                    <h3 className="text-white text-xl font-bold mb-1">{project.title}</h3>
+                    <p className="text-slate-300 text-sm mb-4">{project.description}</p>
+                    <div className="flex gap-3">
+                        <button className="p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-slate-950 transition-colors">
+                            <ZoomIn size={18} />
+                        </button>
+                        <button className="p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-primary hover:text-white transition-colors">
+                            <ExternalLink size={18} />
+                        </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // DriveAccess Component
+    const DriveAccess = () => {
+      const driveLink = "https://drive.google.com/drive/u/0/my-drive"; 
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(driveLink)}&color=0f172a&bgcolor=ffffff`;
+
+      return (
+        <section id="drive" className="py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-primary/5 -skew-y-3 transform origin-top-left scale-110"></div>
+          
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="max-w-5xl mx-auto bg-slate-800/50 backdrop-blur-xl border border-slate-700 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden">
+              <div className="flex flex-col md:flex-row gap-12 items-center">
+                
+                <div className="flex-1 space-y-6 text-center md:text-left">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-primary/20 text-primary text-sm font-semibold">
+                    <HardDrive size={16} />
+                    <span>Akses Premium</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-white">
+                    Download Aset & <br /> High-Res Photos
+                  </h2>
+                  <p className="text-slate-300 text-lg">
+                    Pindai QR Code di samping untuk mengakses folder Google Drive yang berisi semua hasil foto resolusi tinggi, aset desain, dan dokumen proyek.
+                  </p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
+                    <div className="flex items-center gap-3 text-slate-400 text-sm">
+                      <div className="p-2 bg-slate-700 rounded-full text-white">
+                        <Smartphone size={20} />
+                      </div>
+                      <span>Scan via HP</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-slate-400 text-sm">
+                      <div className="p-2 bg-slate-700 rounded-full text-white">
+                        <Download size={20} />
+                      </div>
+                      <span>Instant Access</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-6">
+                     <a 
+                        href={driveLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold border-b border-primary/50 hover:border-primary transition-all pb-1"
+                     >
+                        Atau klik link ini langsung
+                        <Share2 size={16} />
+                     </a>
+                  </div>
+                </div>
+
+                <div className="flex-shrink-0">
+                  <div className="bg-white p-6 rounded-2xl shadow-xl transform rotate-3 hover:rotate-0 transition-transform duration-300 max-w-xs mx-auto">
+                    <div className="aspect-square bg-slate-100 rounded-lg overflow-hidden mb-4 border-2 border-slate-900/10">
+                      <img src={qrCodeUrl} alt="QR Code Drive" className="w-full h-full object-contain" />
+                    </div>
+                    <div className="text-center">
+                        <p className="text-slate-950 font-bold text-lg mb-1">SCAN ME</p>
+                        <p className="text-slate-500 text-xs uppercase tracking-widest">Google Drive Folder</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // Footer Component
+    const Footer = () => {
+      return (
+        <footer id="contact" className="bg-slate-950 py-12 border-t border-slate-800">
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              
+              <div className="text-center md:text-left">
+                <h3 className="text-xl font-bold text-white mb-2">Mari Berkolaborasi</h3>
+                <p className="text-slate-400 text-sm">Siap untuk menciptakan sesuatu yang luar biasa bersama?</p>
+                <a href="mailto:hello@kreatif.id" className="text-primary hover:text-secondary transition-colors mt-2 inline-block">hello@kreatif.id</a>
+              </div>
+
+              <div className="flex gap-6">
+                <a href="#" className="p-3 bg-slate-900 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-all">
+                    <Instagram size={20} />
+                </a>
+                <a href="#" className="p-3 bg-slate-900 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-all">
+                    <Twitter size={20} />
+                </a>
+                <a href="#" className="p-3 bg-slate-900 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-all">
+                    <Linkedin size={20} />
+                </a>
+                <a href="#" className="p-3 bg-slate-900 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-all">
+                    <Mail size={20} />
+                </a>
+              </div>
+            </div>
+            
+            <div className="border-t border-slate-900 mt-10 pt-6 text-center text-slate-600 text-sm">
+              &copy; {new Date().getFullYear()} Kreatif.id. All rights reserved. Made with React & Tailwind.
+            </div>
+          </div>
+        </footer>
+      );
+    };
+
+    // Main App Component
+    const App = () => {
+      return (
+        <>
+          <Navbar />
+          <Hero />
+          <Gallery />
+          <DriveAccess />
+          <Footer />
+        </>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
 </body>
 </html>
